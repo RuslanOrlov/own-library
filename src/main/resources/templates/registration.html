@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+		xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="UTF-8">
+	<title>Home Library - User Registration</title>
+	<link rel="stylesheet" th:href="@{${theme}}">
+</head>
+
+<body class="center">
+	<div id="loginArea">
+		<h1>Регистрация пользователя</h1>
+		
+		<form th:method="post" th:action="@{/register}" th:object="${temporaryUserForRegistration}">
+			
+			<input type="hidden" name="_csrf" th:value="${_csrf.token}">
+			
+			<label for="username"><b>Имя пользователя (аккаунт):</b></label>
+			<input type="text" th:field="*{username}">
+			<div style="color:red" 
+					th:if="${#fields.hasErrors('username')}"
+					th:errors="*{username}">Error text</div>
+			<br>
+			<label for="password">Пароль.......................................:</label>
+			<input type="password" th:field="*{password}">
+			<div style="color:red" 
+					th:if="${#fields.hasErrors('password')}"
+					th:errors="*{password}">Error text</div>
+			<br>
+			<label for="confirm">Подтверждение пароля............:</label>
+			<input type="password" th:field="*{confirm}">
+			<div style="color:red" 
+					th:if="${#fields.hasErrors('confirm')}"
+					th:errors="*{confirm}">Error text</div>
+			<br>
+			<label for="fullname">Полное имя пользователя........:</label>
+			<input type="text" th:field="*{fullname}">
+			<div style="color:red" 
+					th:if="${#fields.hasErrors('fullname')}"
+					th:errors="*{fullname}">Error text</div>
+			<br>
+			<label for="birthDate">Дата рождения..........................:</label>
+			<input type="date" th:field="*{birthDate}">
+			<div style="color:red" 
+					th:if="${#fields.hasErrors('birthDate')}"
+					th:errors="*{birthDate}">Error text</div>
+			<br>
+			<label for="phoneNumber">Телефон.....................................:</label>
+			<input type="text" th:field="*{phoneNumber}">
+			<div style="color:red" 
+					th:if="${#fields.hasErrors('phoneNumber')}"
+					th:errors="*{phoneNumber}">Error text</div>
+			<br>
+			<br>
+			<button>Создать пользователя</button>
+		</form>
+	</div>
+</body>
+
+</html>

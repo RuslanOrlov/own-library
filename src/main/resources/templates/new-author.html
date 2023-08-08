@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+		xmlns:th="http://www.thymeleaf.org">
+		
+<head>
+	<meta charset="UTF-8">
+	<title>Library - New Author</title>
+	<link rel="stylesheet" th:href="@{${theme}}">
+</head>
+
+<body>
+	
+	<div class="grid">
+		<div th:switch="${isLoggedIn}" 
+				style="text-align: right;" 
+				class="block" id="pageHeader">
+			
+			<form th:case="false" th:method="get" th:action="@{/login}">
+				<input type="hidden" name="_csrf" th:value="${_csrf.token}">
+				<b><span class="withoutUserNameLink">никого нет в системе</span></b>
+				<button>Войти в систему</button>
+			</form>
+			
+			<form th:case="true" th:method="post" th:action="@{/my-logout}">
+				<input type="hidden" name="_csrf" th:value="${_csrf.token}">
+				<b><a class="withUserNameLink" 
+						th:text="${username} + ' аутентифицирован'"
+						th:href="${'/users/' + currentUserId + '/password'}"></a></b>
+				<button>Выйти из системы</button>
+			</form>
+			
+		</div>
+		<div class="block" id="navArea">NAVIGATION</div>
+		
+		<div class="areaForData" id="articleArea">
+			<h2>Создание нового автора книги</h2>
+			
+			<form th:method="post" th:action="@{/authors/create}">
+				
+				<input type="hidden" name="_csrf" th:value="${_csrf.token}">
+				
+				<label for="fullname">Имя писателя.:</label>
+				<input type="text" th:field="*{author.fullname}">
+				<div style="color:red" 
+					th:if="${#fields.hasErrors('author.fullname')}"
+					th:errors="*{author.fullname}">Error text</div>
+				<br><br>
+				
+				<label for="createDate">Дата создания:</label>
+				<input readonly="readonly" type="text" th:field="*{author.createDate}"
+						style="background-color: rgb(240,240,240);">
+				<br><br>
+				
+				<button>Сохранить нового автора</button>
+			</form>
+		</div>
+		
+		<div class="block" id="serviceArea">SERVICES
+			<br><br>
+			<a th:href="@{/}">На главную страницу ...</a>
+			<br><br>
+			<a th:href="@{/authors}">К списку авторов ...</a>
+			<br><br>
+		</div>
+		
+		<!-- Проверяется, аутентифицирован пользователь или нет -->
+		<div th:switch="${isLoggedIn}" class="block" id="pageFooter">
+			
+			<div id="bottomAppNote">
+				<b><span>The Application "My own library".<br>Author: Ruslan G. Orlov</span></b>
+			</div>
+			
+			<div id="bottomStatArea">
+				<b><span th:text="${curUriStat}"></span></b>
+			</div>
+			
+			<!-- Пользователь НЕ аутентифицирован и кнопки НЕ доступны для нажатия -->
+			<div th:case="false" class="inlineBlock">
+				<form class="inlineBlock" th:method="get" th:action="@{/prev}">
+					<input type="hidden" name="_csrf" th:value="${_csrf.token}">
+					<button disabled="disabled">
+						<img alt="Prev Uri" 
+							th:src="@{/images/main-arrow-left-disabled.png}" 
+							width="35px" height="20px">
+					</button> 
+				</form>
+				<form class="floatRight" th:method="get" th:action="@{/next}">
+					<input type="hidden" name="_csrf" th:value="${_csrf.token}">
+					<button disabled="disabled">
+						<img alt="Next Uri" 
+							th:src="@{/images/main-arrow-right-disabled.png}" 
+							width="35px" height="20px">
+					</button>
+				</form>
+			</div>
+			
+			<!-- Пользователь аутентифицирован и кнопки доступны для нажатия -->
+			<div th:case="true" class="inlineBlock">
+				<form class="inlineBlock" th:method="get" th:action="@{/prev}">
+					<input type="hidden" name="_csrf" th:value="${_csrf.token}">
+					<button>
+						<img alt="Prev Uri" 
+							th:src="@{/images/main-arrow-left.png}" 
+							width="35px" height="20px">
+					</button> 
+				</form>
+				<form class="floatRight" th:method="get" th:action="@{/next}">
+					<input type="hidden" name="_csrf" th:value="${_csrf.token}">
+					<button>
+						<img alt="Next Uri" 
+							th:src="@{/images/main-arrow-right.png}" 
+							width="35px" height="20px">
+					</button>
+				</form>
+			</div>
+		</div>
+	</div>
+	
+</body>
+
+</html>

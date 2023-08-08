@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+		xmlns:th="http://www.thymeleaf.org">
+		
+<head>
+	<meta charset="UTF-8">
+	<title>Library - Edit User Settings</title>
+	<link rel="stylesheet" th:href="@{${theme}}">
+</head>
+
+<body>
+	
+	<div class="grid">
+		<div th:switch="${isLoggedIn}" 
+				style="text-align: right;" 
+				class="block" id="pageHeader">
+			
+			<form th:case="false" th:method="get" th:action="@{/login}">
+				<input type="hidden" name="_csrf" th:value="${_csrf.token}">
+				<b><span class="withoutUserNameLink">никого нет в системе</span></b>
+				<button>Войти в систему</button>
+			</form>
+			
+			<form th:case="true" th:method="post" th:action="@{/my-logout}">
+				<input type="hidden" name="_csrf" th:value="${_csrf.token}">
+				<b><a class="withUserNameLink" 
+						th:text="${username} + ' аутентифицирован'"
+						th:href="${'/users/' + currentUserId + '/password'}"></a></b>
+				<button>Выйти из системы</button>
+			</form>
+			
+		</div>
+		<div class="block" id="navArea">NAVIGATION</div>
+		
+		<div class="areaForData" id="articleArea">
+			<h2>Редактирование моих параметров пользователя</h2>
+			
+			<form th:method="post" th:action="@{/settings}" th:object="${settings}">
+				<input type="hidden" name="_csrf" th:value="${_csrf.token}">
+				
+				<input type="hidden" th:field="*{id}">
+								
+				<label for="pageSize">Размер списков (в записях):</label>
+				<input type="text" th:field="*{pageSize}">
+				<div style="color:red" 
+					th:if="${#fields.hasErrors('pageSize')}"
+					th:errors="*{pageSize}">Error text</div>
+				<br><br>
+				
+				<b><label for="themeNumber">Тема приложения:</label></b> <br><br>
+				<div th:each="eachTheme : ${appThemes}">
+					<input type="radio" th:field="*{appTheme}" th:value="${eachTheme.id}">
+					<span th:text="${eachTheme.themeName} + ' (' + ${eachTheme.themeFileName} + ')'">
+						Theme</span>
+					<br><br>
+				</div>
+				
+				<!-- <input type="text" th:field="*{themeNumber}">
+				<br> <b><span th:if="${!#fields.hasErrors('themeNumber')}">
+						Допустимые значения: 1 (стандартная) или 2 (темная)</span></b>
+				<div style="color:red" 
+					th:if="${#fields.hasErrors('themeNumber')}"
+					th:errors="*{themeNumber}">Error text</div>
+				<br><br>  -->
+				
+				<button>Обновить параметры</button>
+			</form>
+		</div>
+		
+		<div class="block" id="serviceArea">SERVICES
+			<br><br>
+			<a th:href="@{/}">На главную страницу ...</a>
+			<br><br>
+			<a th:href="@{/settings}">Вернуться к просмотру параметров ...</a>
+			<br><br>
+		</div>
+		
+		<!-- Проверяется, аутентифицирован пользователь или нет -->
+		<div th:switch="${isLoggedIn}" class="block" id="pageFooter">
+			
+			<div id="bottomAppNote">
+				<b><span>The Application "My own library".<br>Author: Ruslan G. Orlov</span></b>
+			</div>
+			
+			<div id="bottomStatArea">
+				<b><span th:text="${curUriStat}"></span></b>
+			</div>
+			
+			<!-- Пользователь НЕ аутентифицирован и кнопки НЕ доступны для нажатия -->
+			<div th:case="false" class="inlineBlock">
+				<form class="inlineBlock" th:method="get" th:action="@{/prev}">
+					<input type="hidden" name="_csrf" th:value="${_csrf.token}">
+					<button disabled="disabled">
+						<img alt="Prev Uri" 
+							th:src="@{/images/main-arrow-left-disabled.png}" 
+							width="35px" height="20px">
+					</button> 
+				</form>
+				<form class="floatRight" th:method="get" th:action="@{/next}">
+					<input type="hidden" name="_csrf" th:value="${_csrf.token}">
+					<button disabled="disabled">
+						<img alt="Next Uri" 
+							th:src="@{/images/main-arrow-right-disabled.png}" 
+							width="35px" height="20px">
+					</button>
+				</form>
+			</div>
+			
+			<!-- Пользователь аутентифицирован и кнопки доступны для нажатия -->
+			<div th:case="true" class="inlineBlock">
+				<form class="inlineBlock" th:method="get" th:action="@{/prev}">
+					<input type="hidden" name="_csrf" th:value="${_csrf.token}">
+					<button>
+						<img alt="Prev Uri" 
+							th:src="@{/images/main-arrow-left.png}" 
+							width="35px" height="20px">
+					</button> 
+				</form>
+				<form class="floatRight" th:method="get" th:action="@{/next}">
+					<input type="hidden" name="_csrf" th:value="${_csrf.token}">
+					<button>
+						<img alt="Next Uri" 
+							th:src="@{/images/main-arrow-right.png}" 
+							width="35px" height="20px">
+					</button>
+				</form>
+			</div>
+		</div>
+	</div>
+	
+</body>
+
+</html>

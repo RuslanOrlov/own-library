@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+		xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<meta charset="UTF-8">
+	<title>Library - Edit Book</title>
+	<link rel="stylesheet" th:href="@{${theme}}">
+</head>
+
+<body>
+	
+	<div class="grid">
+		<div th:switch="${isLoggedIn}" 
+				style="text-align: right;" 
+				class="block" id="pageHeader">
+			
+			<form th:case="false" th:method="get" th:action="@{/login}">
+				<input type="hidden" name="_csrf" th:value="${_csrf.token}">
+				<b><span class="withoutUserNameLink">никого нет в системе</span></b>
+				<button>Войти в систему</button>
+			</form>
+			
+			<form th:case="true" th:method="post" th:action="@{/my-logout}">
+				<input type="hidden" name="_csrf" th:value="${_csrf.token}">
+				<b><a class="withUserNameLink" 
+						th:text="${username} + ' аутентифицирован'"
+						th:href="${'/users/' + currentUserId + '/password'}"></a></b>
+				<button>Выйти из системы</button>
+			</form>
+			
+		</div>
+		<div class="block" id="navArea">NAVIGATION</div>
+		
+		<div class="areaForData" id="articleArea">
+			<h2>Редактирование книги</h2>
+			
+			<form th:method="post" th:action="@{/books/current/update}">
+				
+				<input type="hidden" name="_csrf" th:value="${_csrf.token}">
+				
+				<label for="id">Id книги.............:</label>
+				<input readonly="readonly" type="text" th:field="*{book.id}"
+						style="background-color: rgb(240,240,240);">
+				<br><br>
+				
+				<label for="genre">Жанр книги.......:</label>
+				<input type="hidden" th:field="*{book.genre}">
+				<span class="readonlyField" 
+					  th:text="${book.getGenre() == null}? 
+					  		   'Не определен / Undefined' : ${book.getGenre().getNameRus()}">
+					  text</span>
+				<a th:href="@{/books/current/genres}">Выбрать</a>
+				<div style="color: red;"
+					th:if="${#fields.hasErrors('book.genre')}"
+					th:errors="*{book.genre}">Error text</div>
+				<br><br>
+				
+				<label for="genre">Фонд..................:</label>
+				<input type="hidden" th:field="*{book.fund}">
+				<span class="readonlyField" 
+					  th:text="${book.getFund() == null}? 
+					  		   'Не определен / Undefined' : ${book.getFund().getName()}">
+					  text</span>
+				<a th:href="@{/books/current/funds}">Выбрать</a>
+				<div style="color: red;"
+					th:if="${#fields.hasErrors('book.fund')}"
+					th:errors="*{book.fund}">Error text</div>
+				<br><br>
+				
+				<label for="authors">Автор(ы)............:</label>
+				<input type="hidden" th:field="*{book.authors}">
+				<span class="readonlyField" 
+					  th:if="${book.getAuthors().isEmpty()}"
+					  th:text="'Не определен / Undefined'">
+					  text</span>
+				<span class="readonlyField"
+					  th:if="${!book.getAuthors().isEmpty()}"
+					  th:each="author, iStat : ${book.getAuthors()}" 
+					  th:text="${iStat.last}? ${author.fullname} : ${author.fullname} + ', '">
+					  text</span>
+				<a th:href="@{/books/current/authors}">Выбрать</a>
+				<div style="color: red;"
+					th:if="${#fields.hasErrors('book.authors')}"
+					th:errors="*{book.authors}">Error text</div>
+				<br><br>
+				
+				<label for="title">Название книги.:</label>
+				<input type="text" th:field="*{book.title}">
+				<div style="color: red;" 
+					th:if="${#fields.hasErrors('book.title')}"
+					th:errors="*{book.title}">Error text</div>
+				<br><br>
+				
+				<label for="description">Описание книги:</label>
+				<input type="text" th:field="*{book.description}">
+				<div style="color: red;"
+					th:if="${#fields.hasErrors('book.description')}"
+					th:errors="*{book.description}">Error text</div>
+				<br><br> 
+				
+				<label for="printYear">Год издания.......:</label>
+				<input type="text" th:field="*{book.printYear}">
+				<div style="color: red;"
+					th:if="${#fields.hasErrors('book.printYear')}"
+					th:errors="*{book.printYear}">Error text</div>
+				<br><br>
+				
+				<label for="createDate">Дата создания....:</label>
+				<input readonly="readonly" type="text" th:field="*{book.createDate}"
+						style="background-color: rgb(240,240,240);">
+				<br><br>
+				
+				<button>Обновить книгу</button>
+			</form>
+		</div>
+		
+		<div class="block" id="serviceArea">SERVICES
+			<br><br>
+			<a th:href="@{/}">На главную страницу ...</a>
+			<br><br>
+			<a th:href="@{/books}">К списку книг ...</a>
+			<br><br>
+		</div>
+		
+		<!-- Проверяется, аутентифицирован пользователь или нет -->
+		<div th:switch="${isLoggedIn}" class="block" id="pageFooter">
+			
+			<div id="bottomAppNote">
+				<b><span>The Application "My own library".<br>Author: Ruslan G. Orlov</span></b>
+			</div>
+			
+			<div id="bottomStatArea">
+				<b><span th:text="${curUriStat}"></span></b>
+			</div>
+			
+			<!-- Пользователь НЕ аутентифицирован и кнопки НЕ доступны для нажатия -->
+			<div th:case="false" class="inlineBlock">
+				<form class="inlineBlock" th:method="get" th:action="@{/prev}">
+					<input type="hidden" name="_csrf" th:value="${_csrf.token}">
+					<button disabled="disabled">
+						<img alt="Prev Uri" 
+							th:src="@{/images/main-arrow-left-disabled.png}" 
+							width="35px" height="20px">
+					</button> 
+				</form>
+				<form class="floatRight" th:method="get" th:action="@{/next}">
+					<input type="hidden" name="_csrf" th:value="${_csrf.token}">
+					<button disabled="disabled">
+						<img alt="Next Uri" 
+							th:src="@{/images/main-arrow-right-disabled.png}" 
+							width="35px" height="20px">
+					</button>
+				</form>
+			</div>
+			
+			<!-- Пользователь аутентифицирован и кнопки доступны для нажатия -->
+			<div th:case="true" class="inlineBlock">
+				<form class="inlineBlock" th:method="get" th:action="@{/prev}">
+					<input type="hidden" name="_csrf" th:value="${_csrf.token}">
+					<button>
+						<img alt="Prev Uri" 
+							th:src="@{/images/main-arrow-left.png}" 
+							width="35px" height="20px">
+					</button> 
+				</form>
+				<form class="floatRight" th:method="get" th:action="@{/next}">
+					<input type="hidden" name="_csrf" th:value="${_csrf.token}">
+					<button>
+						<img alt="Next Uri" 
+							th:src="@{/images/main-arrow-right.png}" 
+							width="35px" height="20px">
+					</button>
+				</form>
+			</div>
+		</div>
+	</div>
+	
+</body>
+
+</html>

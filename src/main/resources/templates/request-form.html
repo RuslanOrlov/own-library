@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+		xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<meta charset="UTF-8">
+	<title>Library - Removal Request</title>
+	<link rel="stylesheet" th:href="@{${theme}}">
+</head>
+
+<body>
+	
+	<div class="grid">
+		<div th:switch="${isLoggedIn}" 
+				style="text-align: right;" 
+				class="block" id="pageHeader">
+			
+			<form th:case="false" th:method="get" th:action="@{/login}">
+				<input type="hidden" name="_csrf" th:value="${_csrf.token}">
+				<b><span class="withoutUserNameLink">никого нет в системе</span></b>
+				<button>Войти в систему</button>
+			</form>
+			
+			<form th:case="true" th:method="post" th:action="@{/my-logout}">
+				<input type="hidden" name="_csrf" th:value="${_csrf.token}">
+				<b><span class="withUserNameLink" 
+						th:text="${username} + ' аутентифицирован'"></span></b>
+				<button>Выйти из системы</button>
+			</form>
+			
+		</div>
+		<div class="block" id="navArea">NAVIGATION</div>
+	
+		<div class="areaForDataForOtherMessages" id="articleArea">
+			<div id="requestArea">
+				<!-- Заголовок сообщения и текст сообщения -->
+				<h3 th:if="${title != null}" th:text="${title}">title</h3>
+				<p th:if="${message != null}" th:text="${message}">message</p>
+				<!-- Кнопка выбора действия_1 пользователя -->
+				<form th:if="${(actionUrl_1 != null) and (action_1 != null) and (button_1 != null)} and ${isId}" 
+						th:action="@{${actionUrl_1} + '/' + ${id} + ${action_1}}">
+					<input type="hidden" name="_csrf" th:value="${_csrf.token}">
+					<button th:text="${button_1}">button_name</button>
+				</form>
+				<form th:if="${(actionUrl_1 != null) and (action_1 != null) and (button_1 != null)} and ${!isId}" 
+						th:action="@{${actionUrl_1} + ${action_1}}">
+					<input type="hidden" name="_csrf" th:value="${_csrf.token}">
+					<button th:text="${button_1}">button_name</button>
+				</form>
+				<!-- Кнопка выбора действия_2 пользователя -->
+				<form th:if="${(actionUrl_2 != null) and (action_2 != null) and (button_2 != null)} and ${isId}" 
+						th:action="@{${actionUrl_2} + '/' + ${id} + ${action_2}}">
+					<input type="hidden" name="_csrf" th:value="${_csrf.token}">
+					<button th:text="${button_2}">button_name</button>
+				</form>
+				<form th:if="${(actionUrl_2 != null) and (action_2 != null) and (button_2 != null)} and ${!isId}" 
+						th:action="@{${actionUrl_2} + ${action_2}}">
+					<input type="hidden" name="_csrf" th:value="${_csrf.token}">
+					<button th:text="${button_2}">button_name</button>
+				</form>
+				<!-- Кнопка выбора действия_3 пользователя -->
+				<form th:if="${(listRootUrl != null) and (button_cancel != null)}" 
+						th:action="@{${listRootUrl}}">
+					<input type="hidden" name="_csrf" th:value="${_csrf.token}">
+					<button th:text="${button_cancel}">button_name</button>
+				</form>
+			</div>
+		</div>
+		
+		<div class="block" id="serviceArea">SERVICES
+			<br><br>
+			<a th:href="@{/}">На главную страницу ...</a>
+			<br>
+		</div>
+		
+		<!-- Проверяется, аутентифицирован пользователь или нет -->
+		<div th:switch="${isLoggedIn}" class="block" id="pageFooter">
+			
+			<div id="bottomAppNote">
+				<b><span>The Application "My own library".<br>Author: Ruslan G. Orlov</span></b>
+			</div>
+			
+			<div id="bottomStatArea">
+				<b><span th:text="${curUriStat}"></span></b>
+			</div>
+			
+			<!-- Пользователь НЕ аутентифицирован и кнопки НЕ доступны для нажатия -->
+			<div th:case="false" class="inlineBlock">
+				<form class="inlineBlock" th:method="get" th:action="@{/prev}">
+					<input type="hidden" name="_csrf" th:value="${_csrf.token}">
+					<button disabled="disabled">
+						<img alt="Prev Uri" 
+							th:src="@{/images/main-arrow-left-disabled.png}" 
+							width="35px" height="20px">
+					</button> 
+				</form>
+				<form class="floatRight" th:method="get" th:action="@{/next}">
+					<input type="hidden" name="_csrf" th:value="${_csrf.token}">
+					<button disabled="disabled">
+						<img alt="Next Uri" 
+							th:src="@{/images/main-arrow-right-disabled.png}" 
+							width="35px" height="20px">
+					</button>
+				</form>
+			</div>
+			
+			<!-- Пользователь аутентифицирован и кнопки доступны для нажатия -->
+			<div th:case="true" class="inlineBlock">
+				<form class="inlineBlock" th:method="get" th:action="@{/prev}">
+					<input type="hidden" name="_csrf" th:value="${_csrf.token}">
+					<button>
+						<img alt="Prev Uri" 
+							th:src="@{/images/main-arrow-left.png}" 
+							width="35px" height="20px">
+					</button> 
+				</form>
+				<form class="floatRight" th:method="get" th:action="@{/next}">
+					<input type="hidden" name="_csrf" th:value="${_csrf.token}">
+					<button>
+						<img alt="Next Uri" 
+							th:src="@{/images/main-arrow-right.png}" 
+							width="35px" height="20px">
+					</button>
+				</form>
+			</div>
+		</div>
+	</div>
+	
+</body>
+
+</html>

@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+		xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<meta charset="UTF-8">
+	<title>Library - Authors</title>
+	<link rel="stylesheet" th:href="@{${theme}}">
+</head>
+
+<body>
+	
+	<div class="grid">
+		<div th:switch="${isLoggedIn}" 
+				style="text-align: right;" 
+				class="block" id="pageHeader">
+			
+			<form th:case="false" th:method="get" th:action="@{/login}">
+				<input type="hidden" name="_csrf" th:value="${_csrf.token}">
+				<b><span class="withoutUserNameLink">никого нет в системе</span></b>
+				<button>Войти в систему</button>
+			</form>
+			
+			<form th:case="true" th:method="post" th:action="@{/my-logout}">
+				<input type="hidden" name="_csrf" th:value="${_csrf.token}">
+				<b><a class="withUserNameLink" 
+						th:text="${username} + ' аутентифицирован'"
+						th:href="${'/users/' + currentUserId + '/password'}"></a></b>
+				<button>Выйти из системы</button>
+			</form>
+			
+		</div>
+		<div class="block" id="navArea">NAVIGATION</div>
+		
+		<div class="areaForData" id="articleArea">
+			<h2>Список авторов книг</h2>
+			<form th:action="@{/authors/new}">
+				<input type="hidden" name="_csrf" th:value="${_csrf.token}">
+				<button>Создать нового автора</button>
+			</form>
+			<br>
+			<table class="scroll-table" border="2" cellpadding="5">
+				<tr>
+					<th>Id</th>
+					<th>Имя писателя</th>
+					<th colspan="3">Операции со списком</th>
+				</tr>
+				<tr th:each="author : ${authors}">
+					<td th:text="${author.getId()}">
+					<td th:text="${author.getFullname()}">
+					<td> 
+						<a th:href="@{/authors/{id}(id=${author.getId()})}">Просмотреть</a>
+					</td>
+					<td>
+						<a th:href="@{/authors/{id}/edit(id=${author.getId()})}">Редактировать</a>
+					</td>
+					<td>
+						<a th:href="@{/authors/{id}/removal_request(id=${author.getId()})}">Удалить</a>
+					</td>
+				</tr>
+			</table>
+							
+			<div class="pageControl">
+				<span th:text="'Всего авторов: ' + ${totalAuthors}">text</span>
+				<a th:href="@{/authors/pageable}"
+					th:text="${isPageable}? 'Общий список ...' : 'Постраничная разбивка ...'">text</a>
+				
+				<br th:if="${isPageable}"><br th:if="${isPageable}">
+				
+				<span th:if="${isPageable}" 
+						th:text="'Страница: ' + ${curPage} + '/' + ${totalPages}">text</span>
+				<a th:if="${isPageable}" th:href="@{/authors/first}">(<<)</a>
+				<a th:if="${isPageable}" th:href="@{/authors/prev}">Пред.</a>
+				<a th:if="${isPageable}" th:href="@{/authors/next}">След.</a>
+				<a th:if="${isPageable}" th:href="@{/authors/last}">(>>)</a>
+			</div>
+			
+		</div>
+		
+		<div class="block" id="serviceArea">SERVICES
+			<br><br>
+			<a th:href="@{/}">На главную страницу ...</a>
+			<br>
+		</div>
+		
+		<!-- Проверяется, аутентифицирован пользователь или нет -->
+		<div th:switch="${isLoggedIn}" class="block" id="pageFooter">
+			
+			<div id="bottomAppNote">
+				<b><span>The Application "My own library".<br>Author: Ruslan G. Orlov</span></b>
+			</div>
+			
+			<div id="bottomStatArea">
+				<b><span th:text="${curUriStat}"></span></b>
+			</div>
+			
+			<!-- Пользователь НЕ аутентифицирован и кнопки НЕ доступны для нажатия -->
+			<div th:case="false" class="inlineBlock">
+				<form class="inlineBlock" th:method="get" th:action="@{/prev}">
+					<input type="hidden" name="_csrf" th:value="${_csrf.token}">
+					<button disabled="disabled">
+						<img alt="Prev Uri" 
+							th:src="@{/images/main-arrow-left-disabled.png}" 
+							width="35px" height="20px">
+					</button> 
+				</form>
+				<form class="floatRight" th:method="get" th:action="@{/next}">
+					<input type="hidden" name="_csrf" th:value="${_csrf.token}">
+					<button disabled="disabled">
+						<img alt="Next Uri" 
+							th:src="@{/images/main-arrow-right-disabled.png}" 
+							width="35px" height="20px">
+					</button>
+				</form>
+			</div>
+			
+			<!-- Пользователь аутентифицирован и кнопки доступны для нажатия -->
+			<div th:case="true" class="inlineBlock">
+				<form class="inlineBlock" th:method="get" th:action="@{/prev}">
+					<input type="hidden" name="_csrf" th:value="${_csrf.token}">
+					<button>
+						<img alt="Prev Uri" 
+							th:src="@{/images/main-arrow-left.png}" 
+							width="35px" height="20px">
+					</button> 
+				</form>
+				<form class="floatRight" th:method="get" th:action="@{/next}">
+					<input type="hidden" name="_csrf" th:value="${_csrf.token}">
+					<button>
+						<img alt="Next Uri" 
+							th:src="@{/images/main-arrow-right.png}" 
+							width="35px" height="20px">
+					</button>
+				</form>
+			</div>
+		</div>
+	</div>
+	
+</body>
+
+</html>

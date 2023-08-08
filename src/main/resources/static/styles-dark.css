@@ -1,0 +1,207 @@
+@charset "UTF-8";
+
+.center {
+	min-height: 90vh;
+	display: grid;
+	place-items: center;
+	background-color: #494949;
+	color: white;
+}
+#loginArea {
+	padding: 0% 2% 2% 2%;
+	font-size: 110%;
+	border-width: 2px;
+	border-style: solid;
+}
+
+.grid {
+	display: grid;
+	grid-template-areas:
+	"A A A"
+	"X Y Z"
+	"B B B";
+	grid-template-rows: 10% 1fr 10%;
+	grid-template-columns: 1fr 60% 1fr;
+	grid-gap: 10px;
+	height: 98vh;
+}
+
+.block {
+	padding: 10px;
+	background: DarkSlateGrey;	/* этот элемент ОТЛИЧАЕТСЯ от СТАНДАРТНОЙ темы */
+	color: white;					/* этот элемент ОТСУТСТВУЕТ в СТАНДАРТНОЙ теме */
+}
+
+.areaForData {
+	padding-left: 10px;
+	padding-right: 10px;
+	background: DimGrey;			/* этот элемент ОТЛИЧАЕТСЯ от СТАНДАРТНОЙ темы */
+	color: white;					/* этот элемент ОТСУТСТВУЕТ в СТАНДАРТНОЙ теме */
+}
+.areaForData > h2 {
+	margin: 2% 0% 2% 0%;
+}
+.areaForDataForOtherMessages {
+	padding-left: 10px;
+	padding-right: 10px;
+	background: DimGrey;			/* этот элемент ОТЛИЧАЕТСЯ от СТАНДАРТНОЙ темы */
+}
+
+.scroll-table {
+	display: block;
+	height: 400px;
+	overflow: auto;
+}
+
+.readonlyField {
+	border-width: 2px; 
+	border-style: inset; 
+	border-color: black gray gray black; 
+	background-color: rgb(240,240,240);
+}
+
+.pageControl {
+	height: 60px;
+	margin: 10px 0px 0px 0px;
+	padding: 3px 0px 0px 3px;
+	border-width: 2px; 
+	border-style: inset; 
+	border-color: #008080;
+}
+
+#pageHeader {
+	grid-area: A;
+}
+
+#navArea {
+	grid-area: X;
+}
+
+#articleArea {
+	grid-area: Y;
+}
+
+#articleAreaForHomePage {
+	grid-area: Y;
+	padding: 0px; 
+	display: flex; 
+	align-items: center; 
+	justify-content: center; 
+}
+#articleAreaForHomePage > img {
+	width: 96%; 
+	height: 100%; 
+}
+
+#requestArea {
+	text-align: center;
+	margin: 18% 15% 0% 15%;
+	padding: 0% 2% 2% 2%;
+	font-size: 150%;
+	border-width: 2px;
+	border-style: solid;
+}
+#requestArea > h3 {
+	color: Yellow;				/* этот элемент ОТЛИЧАЕТСЯ от СТАНДАРТНОЙ темы */
+}
+#requestArea > p {
+	color: white;					/* этот элемент ОТЛИЧАЕТСЯ от СТАНДАРТНОЙ темы */
+}
+#requestArea > a {
+	color: Lime;					/* этот элемент ОТЛИЧАЕТСЯ от СТАНДАРТНОЙ темы */
+}
+#requestArea > form {
+	display: inline-block;
+	margin: 0% 2% 0% 2%;
+}
+
+#serviceArea {
+	grid-area: Z;
+}
+
+#pageFooter {
+	grid-area: B;
+}
+
+/*************************************************/
+/* Ниже задается стиль элементов, используемых в */
+/* области, помеченной атрибутом id="pageFooter" */
+/*************************************************/
+#bottomAppNote {
+	display: inline-block; 
+	width: 50%; 
+	font-size: 110%;
+}
+#bottomStatArea {
+	display: inline-block; 
+	width: 40%; 
+	text-align: right; 
+	padding: 0px 20px 0px 0px; 
+	font-size: 110%; 
+}
+
+.inlineBlock {
+	display: inline-block; 
+}
+.inlineBlock > button {
+	border-radius: 15px 0px 0px 15px; 
+}
+.inlineBlock > button > img {
+	margin-top: 15%; 
+}
+
+.floatRight {
+	float: right; 
+}
+.floatRight > button {
+	border-radius: 0px 15px 15px 0px; 
+}
+.floatRight > button > img {
+	margin-top: 15%; 
+}
+
+/***************************************************************/
+/* Ниже задаются общие стили для элементов шаблонов приложения */
+/***************************************************************/
+.inlineBlockOther {
+	display: inline-block; 
+	margin-bottom: 15px; 
+}
+.floatLeftOther {
+	float: left; 
+	margin-bottom: 15px; 
+}
+.floatRightOther {
+	float: right; 
+	margin-bottom: 15px; 
+}
+.withoutUserNameLink {
+	font-size: 110%; 
+	color: rgb(230, 0, 0);
+}
+.withUserNameLink {
+	font-size: 110%; 
+}
+
+button {
+	font-size: 17px;
+	background: #d6d8d6;
+	border-bottom-width: 4px;
+	border-color: #b2b2b2;
+	border-radius: 3px;
+}
+
+body {
+	margin: 0px;
+}
+
+/********************************************/
+/* Эти стили ОТСУТСТВУЮТ в СТАНДАРТНОЙ теме */
+/********************************************/
+a {
+	color: Lime;
+}
+
+span {
+	color: Lime;
+}
