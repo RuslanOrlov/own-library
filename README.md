@@ -11,7 +11,7 @@ The application implements the following features:
 5. using the theme to design the application interface (themes are created as css files) and interactively switch to another application interface when changing the theme in the user settings;
 6. select and save personal settings for the current user, such as:
 a) application design theme: standard - light and dark - dark (when changing the theme, an interactive change of the application interface occurs),
-b) the number of entries displayed when paginating lists.
+b) the number of entries displayed when paginating lists;
 7. saving a chain of user transitions in the application interface (in the form of linked URIs) with the ability to navigate through the saved chain of transitions "forward" (to the end) and "backward" (to the beginning).
 
 /* -------------------------------------------------------------------------------------------------------------- */
@@ -28,5 +28,5 @@ RUS: Проект основан на Java и Spring Boot и реализует 
 5. использования темы для оформления интерфейса приложения (темы созданы в виде css файлов) и интерактивно переключаться на другой интерфейс приложения при изменении темы в настройках пользователя; 
 6. выбирать и сохранять текущему пользователю персональные настройки, такие как: 
 a) тема оформления приложения: standard - светлая и dark - темная (при изменении темы происходит интерактивное изменение интерфейса приложения),
-b) количество отображаемых записей при постраничном просмотре списков. 
+b) количество отображаемых записей при постраничном просмотре списков; 
 7. сохранения цепочки переходов пользователя в интерфейсе приложения (в виде связанных URI) с возможностью навигации по сохраненной цепочке переходов "вперед" (в конец) и "назад" (в начало). 
